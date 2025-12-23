@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bibliothèque en ligne - @yield('title')</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-50 font-sans antialiased">
 
     <!-- Header -->
@@ -18,17 +20,29 @@
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-4">
-                            <a href="{{ route('index') }}" class="text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
-                            <a href="{{ route('books')}}" class="text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Recherche</a>
-                            <a href="{{ route('about')}}" class="text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">A propos</a>
-                            <a href="{{ route('contact')}}" class="text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                            <a href="{{ route('index') }}"
+                                class="text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
+                            <a class="nav-item">
+                                <a class="nav-link" href="{{ route('book.index') }}">Livres</a>
+                            </a>
+
+                            <a href="{{ route('books') }}"
+                                class="text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Recherche</a>
+                            <a href="{{ route('about') }}"
+                                class="text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">A
+                                propos</a>
+                            <a href="{{ route('contact') }}"
+                                class="text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
                         </div>
                     </div>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6">
-                        <a href="#" class="text-gray-600 hover:bg-gray-100 font-medium rounded-md text-sm px-3 py-2">S'inscrire</a>
-                        <a href="#" class="ml-3 text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-md text-sm px-3 py-2">Se connecter</a>
+                        <a href="#"
+                            class="text-gray-600 hover:bg-gray-100 font-medium rounded-md text-sm px-3 py-2">S'inscrire</a>
+                        <a href="#"
+                            class="ml-3 text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-md text-sm px-3 py-2">Se
+                            connecter</a>
                     </div>
                 </div>
             </div>
@@ -66,8 +80,10 @@
                 <div>
                     <h4 class="text-lg font-semibold text-gray-800">Newsletter</h4>
                     <form class="mt-4 flex">
-                        <input type="email" placeholder="Email Address" class="w-full px-3 py-2 rounded-l-md bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button type="submit" class="px-4 py-2 rounded-r-md bg-blue-600 hover:bg-blue-700 text-white font-semibold">Go</button>
+                        <input type="email" placeholder="Email Address"
+                            class="w-full px-3 py-2 rounded-l-md bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button type="submit"
+                            class="px-4 py-2 rounded-r-md bg-blue-600 hover:bg-blue-700 text-white font-semibold">Go</button>
                     </form>
                 </div>
             </div>
@@ -78,4 +94,5 @@
     </footer>
 
 </body>
+
 </html>
