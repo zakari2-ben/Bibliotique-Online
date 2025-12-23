@@ -14,6 +14,7 @@ class Book extends Model
         'description',
         'prix',
         'auteur',
+        'annee',
         'cover',
         'type',
         'langue',

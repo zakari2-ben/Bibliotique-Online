@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('categorie')->default('Nouveau');
             $table->double('prix')->default(0);
             $table->string('auteur')->default('Anonyme');
+            $table->date('annee');
             $table->string('cover')->default('no_cover.jpg');
             $table->timestamps();
         });
