@@ -1,10 +1,99 @@
-<form method="POST" action="{{ route('book.update', $book->id) }}">
-    @csrf
-    @method('PUT')
+@extends('layouts.app')
 
-    <input type="text" name="designation" value="{{ $book->designation }}">
-    <textarea name="description">{{ $book->description }}</textarea>
-    <input type="number" name="prix" value="{{ $book->prix }}">
+@section('title', 'Modifier le livre')
 
-    <button type="submit">Modifier</button>
-</form>
+@section('content')
+    <div class="py-12 bg-gray-50 min-h-screen">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="max-w-3xl mx-auto text-center mb-8">
+                <h2 class="text-3xl font-extrabold text-gray-900">Modifier le livre</h2>
+                <p class="mt-2 text-gray-600">changer les informations de :<span
+                        class="text-blue-600 font-bold">{{ $book->designation }}</span></p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+                <form action="{{ route('book.update', $book->id) }}" method="POST" enctype="multipart/form-data"
+                    class="p-8 space-y-6">
+                    @csrf
+                    @method('PUT') @if ($errors->any())
+                        <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+                            <ul class="list-disc list-inside text-sm text-red-600">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Désignation </label>
+                            <input type="text" name="designation" value="{{ old('designation', $book->designation) }}"
+                                required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Auteur </label>
+                            <input type="text" name="auteur" value="{{ old('auteur', $book->auteur) }}" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Editeur </label>
+                            <input type="text" name="editeur" value="{{ old('editeur', $book->editeur) }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Année </label>
+                            <input type="number" name="annee" value="{{ old('annee', $book->annee) }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Prix </label>
+                            <input type="number" step="0.01" name="prix" value="{{ old('prix', $book->prix) }}"
+                                required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Catégorie / Type </label>
+                            <input type="text" name="type" value="{{ old('type', $book->type) }}" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Description </label>
+                            <textarea name="description" rows="4"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border">{{ old('description', $book->description) }}</textarea>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Image de couverture </label>
+                            <div class="mt-2 flex items-center gap-4">
+                                <div class="w-16 h-20 bg-gray-100 rounded border overflow-hidden">
+                                    <img src="{{ asset('covers/' . $book->cover) }}" class="w-full h-full object-cover"
+                                        onerror="this.src='{{ asset('covers/no_cover.jpg') }}'">
+                                </div>
+                                <input type="file" name="cover" accept="image/*"
+                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-4 pt-6 border-t border-gray-100">
+                        <a href="{{ route('book.index') }}"
+                            class="text-sm font-medium text-gray-600 hover:text-gray-800">Annuler</a>
+                        <button type="submit"
+                            class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors">
+                            Mettre à jour
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
