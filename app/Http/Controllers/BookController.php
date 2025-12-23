@@ -19,7 +19,7 @@ class BookController extends Controller
         // $books = \App\Models\Book::all();
         // dd($books);
 
-    
+
         // dd('KHDAM');
 
     }
@@ -37,16 +37,39 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $request->validate([
-            'designation' => 'required|unique:books',
-            'description' => 'required',
-            'prix' => 'required'
+            'designation' => 'required|string|max:255',
+            'auteur' => 'required|string|max:255',
+            'prix' => 'required|numeric|min:0',
+            'type' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        Book::create($request->all());
+        $book = new Book();
+        $book->designation = $request->input('designation');
+        $book->auteur = $request->input('auteur');
+        $book->editeur = $request->input('editeur');
+        $book->annee = $request->input('annee');
+        $book->prix = $request->input('prix');
+        $book->type = $request->input('type');
+        $book->description = $request->input('description');
 
-        return redirect()->route('book.index')
-            ->with('success', 'Livre ajouté avec succès');
+        if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
+            $image = $request->file('cover');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('covers'), $imageName);
+            $book->cover = $imageName;
+        } else {
+
+            
+            $book->cover = 'default-book.png';
+        }
+
+        $book->save();
+
+        return redirect()->route('book.index')->with('success', 'Livre ajouté avec succès.');
     }
 
     /**
