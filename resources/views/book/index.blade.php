@@ -4,7 +4,7 @@
     <div class="py-24 bg-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <span class="text-blue-600 font-semibold">Tous les livres</span>
+                <a href= {{route('book.create')}} class="text-blue-600 font-semibold">Ajoute un livre</a>
                 <h2 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text4xl">Parcourir les livres</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap8">
@@ -16,7 +16,7 @@
                             <img src="{{ asset('covers/' . $book->id . '.jpg') }}" alt="{{ $book->designation }} cover"
                                 class="w-full h-full object-cover group-hover:scale-105
 transition-transform duration-300"
-                                onerror="this.src='{{ asset('covers/book-coverplaceholder.png') }}'">
+                                onerror="this.src='{{ asset('covers/default-book.png') }}'">
                         </div>
                         <!-- Card Content -->
                         <div class="p-5 space-y-4">
@@ -58,8 +58,7 @@ leading-tight">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        onclick="return confirm('Are you sure you want to
-delete this book?')"
+                                        onclick="return confirm('Are you sure you want todelete this book?')"
                                         class="group/btn flex flex-col items-center gap-1
 text-gray-600 hover:text-red-600 transition"
                                         title="Delete Book">
