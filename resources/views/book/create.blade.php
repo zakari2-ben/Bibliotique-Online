@@ -24,7 +24,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="col-span-2">
                         <label class="block text-sm font-medium text-gray-700">Désignation</label>
-                        <input type="text" name="designation" value="{{ old('designation') }}"
+                        <input type="text" name="designation" value="{{ old('designation') }}" 
                             class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('designation') border-red-500 @else border-gray-300 @enderror">
                         @error('designation')
                             <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
