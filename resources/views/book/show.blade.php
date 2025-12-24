@@ -10,8 +10,8 @@
                     <div class="md:flex items-start">
                         <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
                             <img class="w-48 h-auto object-cover rounded-md shadow-lg mx-auto"
-                                 src="{{ asset('covers/' . $book->cover) }}" alt="Book Cover"
-                                 onerror="this.src='{{ asset('covers/no_cover.jpg') }}'">
+                                src="{{ asset('covers/' . $book->cover) }}" alt="Book Cover"
+                                onerror="this.src='{{ asset('covers/default-book.png') }}'">
                         </div>
                         <div class="flex-grow">
                             <h3 class="text-3xl font-bold text-gray-900">{{ $book->designation }}</h3>
@@ -48,7 +48,7 @@
 
                     <div class="mt-6">
                         <a href="#"
-                           class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                            class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                             Acheter
                         </a>
                     </div>
