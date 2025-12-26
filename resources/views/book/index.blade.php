@@ -13,10 +13,10 @@
                         class="group relative bg-white rounded-xl shadow-sm hover:shadow2xl transition-all duration-300 border border-gray-200 overflow-hidden">
                         <!-- Book Cover -->
                         <div class="aspect-[3/4] overflow-hidden bg-gray-100">
-                            <img src="{{ asset('covers/' . $book->id . '.jpg') }}" alt="{{ $book->designation }} cover"
-                                class="w-full h-full object-cover group-hover:scale-105
-transition-transform duration-300"
-                                onerror="this.src='{{ asset('covers/default-book.png') }}'">
+                            <img src="{{ asset('covers/' . $book->cover) }}" 
+     alt="{{ $book->designation }} cover"
+     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+     onerror="this.src='{{ asset('covers/default-book.png') }}'">
                         </div>
                         <!-- Card Content -->
                         <div class="p-5 space-y-4">

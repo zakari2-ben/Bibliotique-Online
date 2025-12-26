@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
+        $books = Book::latest()->get();
+
         return view('book.index', compact('books'));
         // $books = \App\Models\Book::all();
         // dd($books->count());
@@ -35,18 +38,9 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
-        //dd($request->all());
-        $request->validate([
-            'designation' => 'required|string|max:255',
-            'auteur' => 'required|string|max:255',
-            'prix' => 'required|numeric|min:0',
-            'type' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
+        
         $book = new Book();
         $book->designation = $request->input('designation');
         $book->auteur = $request->input('auteur');
@@ -56,14 +50,13 @@ class BookController extends Controller
         $book->type = $request->input('type');
         $book->description = $request->input('description');
 
+        // logic de image :
         if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
             $image = $request->file('cover');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('covers'), $imageName);
             $book->cover = $imageName;
         } else {
-
-            
             $book->cover = 'default-book.png';
         }
 
@@ -93,14 +86,45 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $book = Book::findOrFail($id);
-        $book->update($request->all());
+    // Tout d’abord, importer la Request
 
-        return redirect()->route('book.index')
-            ->with('success', 'Livre modifié');
+
+// ...
+
+public function update(UpdateBookRequest $request, string $id)
+{
+    $book = Book::findOrFail($id);
+    
+    // Récupérer les données envoyées par l’utilisateur (sans l’image au départ)
+    $data = $request->except('cover');
+
+    // Vérifier si une nouvelle image a été envoyée
+    if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
+
+        // (Optionnel) Supprimer l’ancienne image du serveur si ce n’est pas l’image par défaut
+        if ($book->cover && $book->cover !== 'default-book.png') {
+            $oldPath = public_path('covers/' . $book->cover);
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
+        }
+
+        // Téléverser la nouvelle image
+        $image = $request->file('cover');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('covers'), $imageName);
+        
+        // Ajouter le nom de la nouvelle image aux données à mettre à jour
+        $data['cover'] = $imageName;
     }
+
+    // Mettre à jour le livre avec les nouvelles données
+    $book->update($data);
+
+    return redirect()->route('book.index')
+        ->with('success', 'Le livre a été modifié avec succès.');
+}
+
 
     /**
      * Remove the specified resource from storage.
