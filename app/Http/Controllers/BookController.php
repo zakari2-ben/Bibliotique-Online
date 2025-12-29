@@ -39,31 +39,38 @@ class BookController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreBookRequest $request)
-    {
-        
-        $book = new Book();
-        $book->designation = $request->input('designation');
-        $book->auteur = $request->input('auteur');
-        $book->editeur = $request->input('editeur');
-        $book->annee = $request->input('annee');
-        $book->prix = $request->input('prix');
-        $book->type = $request->input('type');
-        $book->description = $request->input('description');
+{
+    // Récupérer uniquement les données validées par le Form Request
+    $validatedData = $request->validated();
 
-        // logic de image :
-        if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
-            $image = $request->file('cover');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('covers'), $imageName);
-            $book->cover = $imageName;
-        } else {
-            $book->cover = 'default-book.png';
-        }
+    // Créer une nouvelle instance de Book avec les données validées
+    // (à condition que les champs soient définis dans $fillable du modèle)
+    $book = new Book($validatedData);
 
-        $book->save();
+    // Ajouter les champs qui ne sont pas inclus dans la validation
+    // (champs optionnels ou traités séparément)
+    $book->editeur = $request->input('editeur');
+    $book->annee = $request->input('annee');
 
-        return redirect()->route('book.index')->with('success', 'Livre ajouté avec succès.');
+    // Gestion de l’upload de l’image de couverture
+    if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
+        $image = $request->file('cover');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('covers'), $imageName);
+        $book->cover = $imageName;
+    } else {
+        // Image par défaut si aucune couverture n’est fournie
+        $book->cover = 'default-book.png';
     }
+
+    // Enregistrer le livre dans la base de données
+    $book->save();
+
+    // Rediriger vers la liste des livres avec un message de succès
+    return redirect()->route('book.index')
+                     ->with('success', 'Livre ajouté avec succès.');
+}
+
 
     /**
      * Display the specified resource.
