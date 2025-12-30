@@ -29,6 +29,8 @@ class StoreBookRequest extends FormRequest
             'type'        => 'required|string|max:255',
             'description' => 'nullable|string',
             'cover'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'editeur'     => 'nullable|string|max:255',
+            'annee'       => 'nullable|numeric',
 
         ];
     }
