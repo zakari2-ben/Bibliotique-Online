@@ -30,6 +30,7 @@ class UpdateBookRequest extends FormRequest
             'cover'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'editeur'     => 'nullable|string|max:255',
             'annee'       => 'nullable|numeric',
+            'remove_cover' => 'nullable|boolean'
         ];
     }
 

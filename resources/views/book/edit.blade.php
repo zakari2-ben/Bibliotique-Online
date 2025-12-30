@@ -3,110 +3,126 @@
 @section('title', 'Modifier le livre')
 
 @section('content')
-<div class="py-12 bg-gray-50 min-h-screen">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="py-12 bg-gray-50 min-h-screen">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="max-w-3xl mx-auto text-center mb-8">
-            <h2 class="text-3xl font-extrabold text-gray-900">Modifier le livre</h2>
-            <p class="mt-2 text-gray-600">Changer les informations de : <span class="text-blue-600 font-bold">{{ $book->designation }}</span></p>
-        </div>
+            <div class="max-w-3xl mx-auto text-center mb-8">
+                <h2 class="text-3xl font-extrabold text-gray-900">Modifier le livre</h2>
+                <p class="mt-2 text-gray-600">Changer les informations de : <span
+                        class="text-blue-600 font-bold">{{ $book->designation }}</span></p>
+            </div>
 
-        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-            <form action="{{ route('book.update', $book->id) }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
-                @csrf
-                @method('PUT')
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+                <form action="{{ route('book.update', $book->id) }}" method="POST" enctype="multipart/form-data"
+                    class="p-8 space-y-6">
+                    @csrf
+                    @method('PUT')
 
-                @if ($errors->any())
-                    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded-r-md">
-                        <p class="text-sm text-red-700 font-bold">Veuillez corriger les erreurs ci-dessous.</p>
-                    </div>
-                @endif
+                    @if ($errors->any())
+                        <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded-r-md">
+                            <p class="text-sm text-red-700 font-bold">Veuillez corriger les erreurs ci-dessous.</p>
+                        </div>
+                    @endif
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700">Désignation</label>
-                        <input type="text" name="designation" value="{{ old('designation', $book->designation) }}"
-                            class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('designation') border-red-500 @else border-gray-300 @enderror">
-                        @error('designation')
-                            <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Désignation</label>
+                            <input type="text" name="designation" value="{{ old('designation', $book->designation) }}"
+                                class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('designation') border-red-500 @else border-gray-300 @enderror">
+                            @error('designation')
+                                <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Auteur</label>
-                        <input type="text" name="auteur" value="{{ old('auteur', $book->auteur) }}"
-                            class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('auteur') border-red-500 @else border-gray-300 @enderror">
-                        @error('auteur')
-                            <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Auteur</label>
+                            <input type="text" name="auteur" value="{{ old('auteur', $book->auteur) }}"
+                                class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('auteur') border-red-500 @else border-gray-300 @enderror">
+                            @error('auteur')
+                                <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Editeur</label>
-                        <input type="text" name="editeur" value="{{ old('editeur', $book->editeur) }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border">
-                    </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Editeur</label>
+                            <input type="text" name="editeur" value="{{ old('editeur', $book->editeur) }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border">
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Année</label>
-                        <input type="number" name="annee" value="{{ old('annee', $book->annee) }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border">
-                    </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Année</label>
+                            <input type="number" name="annee" value="{{ old('annee', $book->annee) }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border">
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Prix</label>
-                        <input type="number" step="0.01" name="prix" value="{{ old('prix', $book->prix) }}"
-                            class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('prix') border-red-500 @else border-gray-300 @enderror">
-                        @error('prix')
-                            <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Prix</label>
+                            <input type="number" step="0.01" name="prix" value="{{ old('prix', $book->prix) }}"
+                                class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('prix') border-red-500 @else border-gray-300 @enderror">
+                            @error('prix')
+                                <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Catégorie / Type</label>
-                        <input type="text" name="type" value="{{ old('type', $book->type) }}"
-                            class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('type') border-red-500 @else border-gray-300 @enderror">
-                        @error('type')
-                            <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Catégorie / Type</label>
+                            <input type="text" name="type" value="{{ old('type', $book->type) }}"
+                                class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('type') border-red-500 @else border-gray-300 @enderror">
+                            @error('type')
+                                <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700">Description</label>
-                        <textarea name="description" rows="4"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('description') border-red-500 @enderror">{{ old('description', $book->description) }}</textarea>
-                        @error('description')
-                            <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Description</label>
+                            <textarea name="description" rows="4"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('description') border-red-500 @enderror">{{ old('description', $book->description) }}</textarea>
+                            @error('description')
+                                <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700">Image de couverture</label>
-                        <div class="mt-2 flex items-center gap-4">
-                            <div class="w-16 h-20 bg-gray-100 rounded border overflow-hidden flex-shrink-0">
-                                <img src="{{ asset('covers/' . $book->cover) }}" class="w-full h-full object-cover"
-                                     onerror="this.src='{{ asset('covers/default-book.png') }}'">
-                            </div>
-                            <div class="flex-grow">
-                                <input type="file" name="cover" accept="image/*"
-                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                                @error('cover')
-                                    <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
-                                @enderror
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Image de couverture</label>
+                            <div class="mt-2 flex items-center gap-4">
+                                <div class="w-16 h-20 bg-gray-100 rounded border overflow-hidden flex-shrink-0">
+                                    <img src="{{ asset('covers/' . $book->cover) }}" class="w-full h-full object-cover"
+                                        onerror="this.src='{{ asset('covers/default-book.png') }}'">
+                                </div>
+                                <div class="flex-grow">
+                                    <input type="file" name="cover" accept="image/*"
+                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+
+                                    {{-- option de supremer l'image--}}
+                                    @if ($book->cover !== 'default-book.png')
+                                        <div class="mt-2 flex items-center">
+                                            <input type="checkbox" name="remove_cover" id="remove_cover" value="1"
+                                                class="h-4 w-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                                            <label for="remove_cover"
+                                                class="ml-2 text-sm text-red-600 font-medium cursor-pointer">
+                                                Supprimer l'image actuelle et revenir à l'image par défaut
+                                            </label>
+                                        </div>
+                                    @endif
+
+                                    @error('cover')
+                                        <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="flex items-center justify-end gap-4 pt-6 border-t border-gray-100">
-                    <a href="{{ route('book.index') }}" class="text-sm font-medium text-gray-600 hover:text-gray-800 transition">Annuler</a>
-                    <button type="submit"
-                        class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all">
-                        Mettre à jour
-                    </button>
-                </div>
-            </form>
+                    <div class="flex items-center justify-end gap-4 pt-6 border-t border-gray-100">
+                        <a href="{{ route('book.index') }}"
+                            class="text-sm font-medium text-gray-600 hover:text-gray-800 transition">Annuler</a>
+                        <button type="submit"
+                            class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all">
+                            Mettre à jour
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 @endsection
