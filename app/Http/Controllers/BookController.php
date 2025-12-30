@@ -14,16 +14,10 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::latest()->get();
+        $books = Book::latest()->paginate(15);
 
         return view('book.index', compact('books'));
-        // $books = \App\Models\Book::all();
-        // dd($books->count());
-        // $books = \App\Models\Book::all();
-        // dd($books);
-
-
-        // dd('KHDAM');
+        
 
     }
 
@@ -39,37 +33,32 @@ class BookController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreBookRequest $request)
-{
-    // Récupérer uniquement les données validées par le Form Request
-    $validatedData = $request->validated();
+    {
+        // Récupérer uniquement les données validées par le Form Request
+        $validatedData = $request->validated();
 
-    // Créer une nouvelle instance de Book avec les données validées
-    // (à condition que les champs soient définis dans $fillable du modèle)
-    $book = new Book($validatedData);
+        // Créer une nouvelle instance de Book avec les données validées
+        // (à condition que les champs soient définis dans $fillable du modèle)
+        $book = new Book($validatedData);
 
-    // Ajouter les champs qui ne sont pas inclus dans la validation
-    // (champs optionnels ou traités séparément)
-    $book->editeur = $request->input('editeur');
-    $book->annee = $request->input('annee');
+        // Gestion de l’upload de l’image de couverture
+        if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
+            $image = $request->file('cover');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('covers'), $imageName);
+            $book->cover = $imageName;
+        } else {
+            // Image par défaut si aucune couverture n’est fournie
+            $book->cover = 'default-book.png';
+        }
 
-    // Gestion de l’upload de l’image de couverture
-    if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
-        $image = $request->file('cover');
-        $imageName = time() . '_' . $image->getClientOriginalName();
-        $image->move(public_path('covers'), $imageName);
-        $book->cover = $imageName;
-    } else {
-        // Image par défaut si aucune couverture n’est fournie
-        $book->cover = 'default-book.png';
+        // Enregistrer le livre dans la base de données
+        $book->save();
+
+        // Rediriger vers la liste des livres avec un message de succès
+        return redirect()->route('book.index')
+            ->with('success', 'Livre ajouté avec succès.');
     }
-
-    // Enregistrer le livre dans la base de données
-    $book->save();
-
-    // Rediriger vers la liste des livres avec un message de succès
-    return redirect()->route('book.index')
-                     ->with('success', 'Livre ajouté avec succès.');
-}
 
 
     /**
@@ -90,25 +79,21 @@ class BookController extends Controller
         return view('book.edit', compact('book'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    // Tout d’abord, importer la Request
-
-
-// ...
-
-public function update(UpdateBookRequest $request, string $id)
+    
+    // Update the specified resource in storage.
+    
+    public function update(UpdateBookRequest $request, string $id)
 {
     $book = Book::findOrFail($id);
-    
-    // Récupérer les données envoyées par l’utilisateur (sans l’image au départ)
-    $data = $request->except('cover');
 
-    // Vérifier si une nouvelle image a été envoyée
+    // Récupérer uniquement les données validées avec succès
+    // Cela signifie que Laravel retourne uniquement les champs définis dans les règles de validation
+    $data = $request->validated();
+
+    // Gestion de la mise à jour de l’image de couverture
     if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
-
-        // (Optionnel) Supprimer l’ancienne image du serveur si ce n’est pas l’image par défaut
+        
+        // Supprimer l’ancienne image (si ce n’est pas l’image par défaut)
         if ($book->cover && $book->cover !== 'default-book.png') {
             $oldPath = public_path('covers/' . $book->cover);
             if (file_exists($oldPath)) {
@@ -121,16 +106,17 @@ public function update(UpdateBookRequest $request, string $id)
         $imageName = time() . '_' . $image->getClientOriginalName();
         $image->move(public_path('covers'), $imageName);
         
-        // Ajouter le nom de la nouvelle image aux données à mettre à jour
+        // Remplacer la valeur de "cover" dans le tableau de données à mettre à jour
         $data['cover'] = $imageName;
     }
 
-    // Mettre à jour le livre avec les nouvelles données
+    // Mettre à jour le livre avec les données validées et la nouvelle image si elle existe
     $book->update($data);
 
     return redirect()->route('book.index')
         ->with('success', 'Le livre a été modifié avec succès.');
 }
+
 
 
     /**
@@ -139,6 +125,6 @@ public function update(UpdateBookRequest $request, string $id)
     public function destroy(string $id)
     {
         Book::findOrFail($id)->delete();
-        return redirect()->route('book.index');
+        return redirect()->route('book.index')->with('success', 'Le livre a été supremeé avec succès.');
     }
 }
