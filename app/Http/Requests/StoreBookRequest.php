@@ -53,7 +53,6 @@ class StoreBookRequest extends FormRequest
             'type.required'        => 'Le type du livre est obligatoire.',
             'type.string'          => 'Le type doit être une chaîne de caractères.',
             'type.max'             => 'Le type ne doit pas dépasser 255 caractères.',
-
             'cover.image'          => 'Le fichier doit être une image.',
             'cover.mimes'          => 'L’image doit être au format : jpeg, png, jpg, gif ou svg.',
             'cover.max'            => 'La taille de l’image ne doit pas dépasser 2 Mo.',
