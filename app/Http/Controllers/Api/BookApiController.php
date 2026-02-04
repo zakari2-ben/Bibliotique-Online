@@ -31,7 +31,7 @@ class BookApiController extends Controller
         ]);
 
         // default cover
-        $data['cover'] = $data['cover'] ?? 'no_cover.jpg';
+        $data['cover'] = $data['cover'] ?? 'default-book.png';
 
         $book = Book::create($data);
 

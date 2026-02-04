@@ -22,7 +22,7 @@ return new class extends Migration
             $table->double('prix')->default(0);
             $table->string('auteur')->default('Anonyme');
             $table->date('annee');
-            $table->string('cover')->default('no_cover.jpg');
+            $table->string('cover')->default('default-book.png');
             $table->timestamps();
         });
     }
