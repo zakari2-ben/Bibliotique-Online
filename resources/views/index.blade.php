@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Index
+            Acceuil
         </h2>
     </x-slot>
 
@@ -16,19 +16,30 @@
 
             <!-- Search Box -->
             <div class="mt-12 max-w-3xl mx-auto">
-                <form action="#" class="sm:flex items-center bg-white rounded-lg p-2 border border-gray-300 shadow-lg">
+                <form action="{{ route('book.search') }}" method="GET"
+                    class="sm:flex items-center bg-white rounded-lg p-2 border border-gray-300 shadow-lg">
                     <div class="min-w-0 flex-1">
-                        <input type="text" placeholder="Titre du livre ou mot clé"
+                        <input type="text" name ="search" value="{{ request('search' )}}" placeholder="Titre du livre ou mot clé"
                             class="w-full bg-transparent border-0 text-gray-800 placeholder-gray-500 focus:ring-0 sm:text-sm px-4 py-3">
                     </div>
 
                     <div class="mt-2 sm:mt-0 sm:ml-2">
-                        <select name="select"
+                        {{-- <select name="select"
                             class="w-full sm:w-auto bg-gray-50 border border-gray-300 rounded-md text-gray-800 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-4 py-3">
-                            <option value="">Toute la bibliothèque</option>
+                            <option value="">Toute la bibliothèque </option>
                             <option value="">Livres</option>
                             <option value="">E-Books</option>
                             <option value="">Livres audibles</option>
+                        </select> --}}
+                        <select name="category"
+                            class="w-full sm:w-auto bg-gray-50 border border-gray-300 rounded-md text-gray-800 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-4 py-3">
+                            <option value="">Toute la bibliothèque</option>
+                            <option value="Informatique" {{ request('category') == 'Informatique' ? 'selected' : '' }}>
+                                Informatique</option>
+                            <option value="Design" {{ request('category') == 'Design' ? 'selected' : '' }}>
+                                Design</option>
+                            <option value="Marketing" {{ request('category') == 'Marketing' ? 'selected' : '' }}>
+                                Marketing</option>
                         </select>
                     </div>
 
@@ -55,44 +66,48 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
-                <div class="bg-white p-8 rounded-lg text-center border border-gray-200 shadow-md hover:shadow-xl transition">
+                <div
+                    class="bg-white p-8 rounded-lg text-center border border-gray-200 shadow-md hover:shadow-xl transition">
                     <div class="text-blue-600 mb-4">
                         <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                     </div>
                     <h5 class="text-lg font-semibold text-gray-900"><a href="#">Informatique</a></h5>
                     <span class="text-gray-500">(653)</span>
                 </div>
 
-                <div class="bg-white p-8 rounded-lg text-center border border-gray-200 shadow-md hover:shadow-xl transition">
+                <div
+                    class="bg-white p-8 rounded-lg text-center border border-gray-200 shadow-md hover:shadow-xl transition">
                     <div class="text-blue-600 mb-4">
                         <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"/>
+                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z" />
                         </svg>
                     </div>
                     <h5 class="text-lg font-semibold text-gray-900"><a href="#">Design</a></h5>
                     <span class="text-gray-500">(658)</span>
                 </div>
 
-                <div class="bg-white p-8 rounded-lg text-center border border-gray-200 shadow-md hover:shadow-xl transition">
+                <div
+                    class="bg-white p-8 rounded-lg text-center border border-gray-200 shadow-md hover:shadow-xl transition">
                     <div class="text-blue-600 mb-4">
                         <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                         </svg>
                     </div>
                     <h5 class="text-lg font-semibold text-gray-900"><a href="#">Marketing</a></h5>
                     <span class="text-gray-500">(658)</span>
                 </div>
 
-                <div class="bg-white p-8 rounded-lg text-center border border-gray-200 shadow-md hover:shadow-xl transition">
+                <div
+                    class="bg-white p-8 rounded-lg text-center border border-gray-200 shadow-md hover:shadow-xl transition">
                     <div class="text-blue-600 mb-4">
                         <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
                     </div>
                     <h5 class="text-lg font-semibold text-gray-900"><a href="#">Mobile Application</a></h5>

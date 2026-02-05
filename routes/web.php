@@ -27,8 +27,8 @@ Route::get('/books/{id}/details', [BookController::class, 'show'])
         ->name('book.show');
 
 // // this for search for book 
-// Route::get('/books/search', [BookController::class, ''])
-//         ->name('profile.books');
+Route::get('/search', [BookController::class, 'search'])->name('book.search');
+
 
 // Routes pour les utilisateurs connectés
 Route::middleware('auth')->group(function () {
