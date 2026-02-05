@@ -190,4 +190,64 @@ class BookController extends Controller
                 ->with('error', 'Erreur lors de la suppression du livre.');
         }
     }
+
+    // fonctione pour la recherche : 
+    public function search(Request $request)
+    {
+        try {
+            $query = Book::query();
+
+            // Recherche par titre ou mot-clé
+            if ($request->filled('search')) {
+                $query->where('designation', 'like', '%' . $request->search . '%')
+                    ->orWhere('description', 'like', '%' . $request->search . '%')
+                    ->orWhere('auteur', 'like', '%' . $request->search . '%');
+            }
+
+            // Filtre par catégorie
+            if ($request->filled('category')) {
+                $query->where('category', $request->category);
+            }
+
+            // Filtre par type (livre_type)
+            if ($request->filled('type')) {
+                $query->whereIn('livre_type', $request->type);
+            }
+
+            // Filtre par tags
+            if ($request->filled('tags')) {
+                foreach ($request->tags as $tag) {
+                    $query->where('tags', 'like', '%' . $tag . '%');
+                }
+            }
+
+            // Tri
+            if ($request->filled('sort')) {
+                switch ($request->sort) {
+                    case 'date':
+                        $query->latest();
+                        break;
+                    case 'price':
+                        $query->orderBy('prix', 'asc');
+                        break;
+                    case 'titre':
+                        $query->orderBy('designation', 'asc');
+                        break;
+                    default:
+                        $query->latest();
+                }
+            } else {
+                $query->latest();
+            }
+
+            $books = $query->paginate(10)->withQueryString();
+
+            Log::info('Search executed successfully');
+
+            return view('book.search', compact('books'));
+        } catch (\Exception $e) {
+            Log::error('Error in search: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erreur lors de la recherche.');
+        }
+    }
 }
