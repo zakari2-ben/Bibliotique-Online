@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('type')->default('Texte');
             $table->string('langue')->default('Francais');
             $table->string('editeur')->default('Anonyme');
-            $table->string('categorie')->default('Nouveau');
+            $table->string('categorie');
             $table->double('prix')->default(0);
             $table->string('auteur')->default('Anonyme');
             $table->date('annee');
