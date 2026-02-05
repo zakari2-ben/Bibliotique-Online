@@ -1,15 +1,19 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Modifier le livre
+        </h2>
+    </x-slot>
 
-@section('title', 'Modifier le livre')
-
-@section('content')
     <div class="py-12 bg-gray-50 min-h-screen">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="max-w-3xl mx-auto text-center mb-8">
                 <h2 class="text-3xl font-extrabold text-gray-900">Modifier le livre</h2>
-                <p class="mt-2 text-gray-600">Changer les informations de : <span
-                        class="text-blue-600 font-bold">{{ $book->designation }}</span></p>
+                <p class="mt-2 text-gray-600">
+                    Changer les informations de :
+                    <span class="text-blue-600 font-bold">{{ $book->designation }}</span>
+                </p>
             </div>
 
             <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
@@ -93,7 +97,6 @@
                                     <input type="file" name="cover" accept="image/*"
                                         class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
 
-                                    {{-- option de supremer l'image--}}
                                     @if ($book->cover !== 'default-book.png')
                                         <div class="mt-2 flex items-center">
                                             <input type="checkbox" name="remove_cover" id="remove_cover" value="1"
@@ -125,4 +128,4 @@
             </div>
         </div>
     </div>
-@endsection
+</x-app-layout>

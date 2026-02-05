@@ -1,6 +1,10 @@
-@extends('layouts.app')
-@section('title', 'Details')
-@section('content')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Details
+        </h2>
+    </x-slot>
+
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <br />
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -21,6 +25,7 @@
                             </ul>
                         </div>
                     </div>
+
                     <div class="mt-6 border-t border-gray-200 pt-6">
                         <h4 class="text-xl font-semibold text-gray-800">Description</h4>
                         <p class="mt-4 text-gray-600 leading-relaxed">
@@ -32,18 +37,35 @@
 
             <aside class="col-span-1">
                 <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-md">
-                    <h4 class="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-4">Informations du livre</h4>
+                    <h4 class="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-4">
+                        Informations du livre
+                    </h4>
+
                     <ul class="mt-4 space-y-3 text-gray-600">
-                        <li class="flex justify-between"><span>Année:</span> <span
-                                class="font-medium text-gray-900">{{ $book->annee }}</span></li>
-                        <li class="flex justify-between"><span>Auteur:</span> <span
-                                class="font-medium text-gray-900">{{ $book->auteur }}</span></li>
-                        <li class="flex justify-between"><span>Editeur:</span> <span
-                                class="font-medium text-gray-900">{{ $book->editeur }}</span></li>
-                        <li class="flex justify-between"><span>Catégorie:</span> <span
-                                class="font-medium text-gray-900">{{ $book->categorie }}</span></li>
-                        <li class="flex justify-between"><span>Prix:</span> <span
-                                class="font-medium text-gray-900">${{ $book->prix }}</span></li>
+                        <li class="flex justify-between">
+                            <span>Année:</span>
+                            <span class="font-medium text-gray-900">{{ $book->annee }}</span>
+                        </li>
+
+                        <li class="flex justify-between">
+                            <span>Auteur:</span>
+                            <span class="font-medium text-gray-900">{{ $book->auteur }}</span>
+                        </li>
+
+                        <li class="flex justify-between">
+                            <span>Editeur:</span>
+                            <span class="font-medium text-gray-900">{{ $book->editeur }}</span>
+                        </li>
+
+                        <li class="flex justify-between">
+                            <span>Catégorie:</span>
+                            <span class="font-medium text-gray-900">{{ $book->categorie }}</span>
+                        </li>
+
+                        <li class="flex justify-between">
+                            <span>Prix:</span>
+                            <span class="font-medium text-gray-900">${{ $book->prix }}</span>
+                        </li>
                     </ul>
 
                     <div class="mt-6">
@@ -57,4 +79,4 @@
 
         </div>
     </div>
-@endsection
+</x-app-layout>
