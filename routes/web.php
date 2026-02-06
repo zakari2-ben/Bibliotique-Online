@@ -2,12 +2,24 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Book;
 use Illuminate\Support\Facades\Route;
 
 // Routes publiques (accessibles à tous)
+// Route::get('/', function () {
+//     return view('index');
+// })->name('index');
+
 Route::get('/', function () {
-    return view('index');
-})->name('index');
+    $categories = Book::select('categorie')
+        ->distinct()
+        ->whereNotNull('categorie')
+        ->where('categorie', '!=', '')
+        ->orderBy('categorie', 'asc')
+        ->pluck('categorie');
+        
+    return view('index', compact('categories'));
+})->name('home');
 
 Route::get('/contact', function () {
     return view('contact');
@@ -19,7 +31,7 @@ Route::get('/about', function () {
 
 // this is for get livers if the visitor not connected (looged in)
 
-Route::get('/bookss', [BookController::class, 'index'])
+Route::get('/books', [BookController::class, 'index'])
         ->name('book.index');
 
 // this for show details of book if the visitor not connected (looged in)
@@ -41,8 +53,8 @@ Route::middleware('auth')->group(function () {
         ->name('profile.destroy');
     
     // Consultation des livres (tous les utilisateurs connectés)
-    Route::get('/books', [BookController::class, 'index'])
-        ->name('book.index');
+    // Route::get('/books', [BookController::class, 'index'])
+    //     ->name('book.index');
    
 });
 

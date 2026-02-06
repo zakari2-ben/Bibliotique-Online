@@ -19,7 +19,8 @@
                 <form action="{{ route('book.search') }}" method="GET"
                     class="sm:flex items-center bg-white rounded-lg p-2 border border-gray-300 shadow-lg">
                     <div class="min-w-0 flex-1">
-                        <input type="text" name ="search" value="{{ request('search' )}}" placeholder="Titre du livre ou mot clé"
+                        <input type="text" name ="search" value="{{ request('search') }}"
+                            placeholder="Titre du livre ou mot clé"
                             class="w-full bg-transparent border-0 text-gray-800 placeholder-gray-500 focus:ring-0 sm:text-sm px-4 py-3">
                     </div>
 
@@ -34,12 +35,12 @@
                         <select name="category"
                             class="w-full sm:w-auto bg-gray-50 border border-gray-300 rounded-md text-gray-800 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-4 py-3">
                             <option value="">Toute la bibliothèque</option>
-                            <option value="Informatique" {{ request('category') == 'Informatique' ? 'selected' : '' }}>
-                                Informatique</option>
-                            <option value="Design" {{ request('category') == 'Design' ? 'selected' : '' }}>
-                                Design</option>
-                            <option value="Marketing" {{ request('category') == 'Marketing' ? 'selected' : '' }}>
-                                Marketing</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category }}"
+                                    {{ request('category') == $category ? 'selected' : '' }}>
+                                    {{ $category }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 

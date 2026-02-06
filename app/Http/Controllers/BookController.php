@@ -13,14 +13,40 @@ class BookController extends Controller
 
     // Display a listing of the resource.
 
+    // public function index()
+    // {
+    //     try {
+    //         $books = Book::latest()->paginate(15);
+    //         Log::info('fetch books successfly');
+    //         return view('book.index', compact('books'));
+    //     } catch (\Exception $e) {
+    //         Log::error('error fetching books' . $e->getMessage());
+    //     }
+    // }
+
     public function index()
     {
         try {
             $books = Book::latest()->paginate(15);
-            Log::info('fetch books successfly');
-            return view('book.index', compact('books'));
+
+            // CETTE PARTIE EST IMPORTANTE - Vérifie qu'elle existe !
+            $categories = Book::select('categorie')
+                ->distinct()
+                ->whereNotNull('categorie')
+                ->where('categorie', '!=', '')
+                ->orderBy('categorie', 'asc')
+                ->pluck('categorie');
+
+            Log::info('fetch books successfully');
+
+            // IMPORTANT : compact('books', 'categories') - pas juste compact('books')
+            return view('book.index', compact('books', 'categories'));
         } catch (\Exception $e) {
-            Log::error('error fetching books' . $e->getMessage());
+            Log::error('error fetching books: ' . $e->getMessage());
+            return view('book.index', [
+                'books' => collect(),
+                'categories' => collect()
+            ]);
         }
     }
 
@@ -192,26 +218,109 @@ class BookController extends Controller
     }
 
     // fonctione pour la recherche : 
+    // public function search(Request $request)
+    // {
+    //     try {
+    //         $query = Book::query();
+
+    //         // Recherche par titre ou mot-clé
+    //         if ($request->filled('search')) {
+    //             $query->where('designation', 'like', '%' . $request->search . '%')
+    //                 ->orWhere('description', 'like', '%' . $request->search . '%')
+    //                 ->orWhere('auteur', 'like', '%' . $request->search . '%');
+    //         }
+
+    //         // Filtre par catégorie
+    //         if ($request->filled('category')) {
+    //             $query->where('category', $request->category);
+    //         }
+
+    //         // Filtre par type (livre_type)
+    //         if ($request->filled('type')) {
+    //             $query->whereIn('livre_type', $request->type);
+    //         }
+
+    //         // Filtre par tags
+    //         if ($request->filled('tags')) {
+    //             foreach ($request->tags as $tag) {
+    //                 $query->where('tags', 'like', '%' . $tag . '%');
+    //             }
+    //         }
+
+    //         // Tri
+    //         if ($request->filled('sort')) {
+    //             switch ($request->sort) {
+    //                 case 'date':
+    //                     $query->latest();
+    //                     break;
+    //                 case 'price':
+    //                     $query->orderBy('prix', 'asc');
+    //                     break;
+    //                 case 'titre':
+    //                     $query->orderBy('designation', 'asc');
+    //                     break;
+    //                 default:
+    //                     $query->latest();
+    //             }
+    //         } else {
+    //             $query->latest();
+    //         }
+
+    //         $books = $query->paginate(10)->withQueryString();
+
+    //         Log::info('Search executed successfully');
+
+    //         return view('book.search', compact('books'));
+    //     } catch (\Exception $e) {
+    //         Log::error('Error in search: ' . $e->getMessage());
+    //         return redirect()->back()->with('error', 'Erreur lors de la recherche.');
+    //     }
+    // }
+
     public function search(Request $request)
     {
         try {
             $query = Book::query();
 
-            // Recherche par titre ou mot-clé
+            // Utiliser 'categorie' au lieu de 'category'
+            $categories = Book::select('categorie')
+                ->distinct()
+                ->whereNotNull('categorie')
+                ->where('categorie', '!=', '')
+                ->orderBy('categorie', 'asc')
+                ->pluck('categorie');
+
+            // Tags
+            $allTags = Book::select('tags')
+                ->whereNotNull('tags')
+                ->where('tags', '!=', '')
+                ->get()
+                ->pluck('tags')
+                ->flatMap(function ($tags) {
+                    return explode(',', $tags);
+                })
+                ->map(function ($tag) {
+                    return trim($tag);
+                })
+                ->unique()
+                ->sort()
+                ->values();
+
+            // Recherche
             if ($request->filled('search')) {
                 $query->where('designation', 'like', '%' . $request->search . '%')
                     ->orWhere('description', 'like', '%' . $request->search . '%')
                     ->orWhere('auteur', 'like', '%' . $request->search . '%');
             }
 
-            // Filtre par catégorie
+            // Filtre par categorie (pas category)
             if ($request->filled('category')) {
-                $query->where('category', $request->category);
+                $query->where('categorie', $request->category);
             }
 
-            // Filtre par type (livre_type)
+            // Filtre par type
             if ($request->filled('type')) {
-                $query->whereIn('livre_type', $request->type);
+                $query->whereIn('type', $request->type);
             }
 
             // Filtre par tags
@@ -244,7 +353,7 @@ class BookController extends Controller
 
             Log::info('Search executed successfully');
 
-            return view('book.search', compact('books'));
+            return view('book.search', compact('books', 'categories', 'allTags'));
         } catch (\Exception $e) {
             Log::error('Error in search: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Erreur lors de la recherche.');
