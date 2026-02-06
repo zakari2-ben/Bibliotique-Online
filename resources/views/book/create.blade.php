@@ -7,14 +7,15 @@
 
     <div class="py-12 bg-gray-50 min-h-screen">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            
+
             <div class="max-w-3xl mx-auto text-center mb-8">
                 <h2 class="text-3xl font-extrabold text-gray-900">Ajouter un nouveau livre</h2>
                 <p class="mt-2 text-gray-600">Remplissez les informations pour ajouter un nouveau livre</p>
             </div>
 
             <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-                <form action="{{ route('book.store') }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+                <form action="{{ route('book.store') }}" method="POST" enctype="multipart/form-data"
+                    class="p-8 space-y-6">
                     @csrf
 
                     @if ($errors->any())
@@ -26,7 +27,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="col-span-2">
                             <label class="block text-sm font-medium text-gray-700">Désignation</label>
-                            <input type="text" name="designation" value="{{ old('designation') }}" 
+                            <input type="text" name="designation" value="{{ old('designation') }}"
                                 class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('designation') border-red-500 @else border-gray-300 @enderror">
                             @error('designation')
                                 <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
@@ -63,13 +64,34 @@
                             @enderror
                         </div>
 
-                        <div>
+                        {{-- <div>
                             <label class="block text-sm font-medium text-gray-700">Catégorie / Type</label>
                             <input type="text" name="type" value="{{ old('type') }}"
                                 class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('type') border-red-500 @else border-gray-300 @enderror">
                             @error('type')
                                 <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
                             @enderror
+                        </div> --}}
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Type (Livre, Manga, etc.)</label>
+                                <input type="text" name="type" value="{{ old('type') }}"
+                                    class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('type') border-red-500 @else border-gray-300 @enderror">
+                                @error('type')
+                                    <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Catégorie (Action, Drame,
+                                    etc.)</label>
+                                <input type="text" name="categorie" value="{{ old('categorie') }}"
+                                    class="mt-1 block w-full rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5 border @error('categorie') border-red-500 @else border-gray-300 @enderror">
+                                @error('categorie')
+                                    <p class="text-red-600 text-xs mt-1 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
 
                         <div class="col-span-2">
@@ -95,7 +117,8 @@
                     </div>
 
                     <div class="flex items-center justify-end gap-4 pt-6 border-t border-gray-100">
-                        <a href="{{ route('book.index') }}" class="text-sm font-medium text-gray-600 hover:text-gray-800 transition">Annuler</a>
+                        <a href="{{ route('book.index') }}"
+                            class="text-sm font-medium text-gray-600 hover:text-gray-800 transition">Annuler</a>
                         <button type="submit"
                             class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
                             Enregistrer le livre
