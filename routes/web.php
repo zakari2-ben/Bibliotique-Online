@@ -5,11 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\Book;
 use Illuminate\Support\Facades\Route;
 
-// Routes publiques (accessibles à tous)
-// Route::get('/', function () {
-//     return view('index');
-// })->name('index');
-
+// 1. الصفحة الرئيسية
 Route::get('/', function () {
     $categories = Book::select('categorie')
         ->distinct()
@@ -21,51 +17,40 @@ Route::get('/', function () {
     return view('index', compact('categories'));
 })->name('home');
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+// 2. صفحات ثابتة
+Route::get('/contact', function () { return view('contact'); })->name('contact');
+Route::get('/about', function () { return view('about'); })->name('about');
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
-// this is for get livers if the visitor not connected (looged in)
-
-Route::get('/books', [BookController::class, 'index'])
-        ->name('book.index');
-
-// this for show details of book if the visitor not connected (looged in)
-Route::get('/books/{id}/details', [BookController::class, 'show'])
-        ->name('book.show');
-
-// // this for search for book 
+// 3. عرض الكتب والبحث (للجميع)
+// هاد الرابط هو اللي بغيتي: /book/index
+Route::get('/book/index', [BookController::class, 'index'])->name('book.index');
+Route::get('/books/{id}/details', [BookController::class, 'show'])->name('book.show');
 Route::get('/search', [BookController::class, 'search'])->name('book.search');
 
-
-// Routes pour les utilisateurs connectés
-Route::middleware('auth')->group(function () {
-    // Page de profil
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
-    
-    // Consultation des livres (tous les utilisateurs connectés)
-    // Route::get('/books', [BookController::class, 'index'])
-    //     ->name('book.index');
-   
-});
-
+// 4. Dashboard (مع جلب الـ Categories)
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $categories = Book::select('categorie')
+        ->distinct()
+        ->whereNotNull('categorie')
+        ->where('categorie', '!=', '')
+        ->orderBy('categorie', 'asc')
+        ->pluck('categorie');
+
+    // تصحيح المسار للي قلتي ليا قبيلة
+    return view('.dashboard', compact('categories'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Routes CRUD réservées aux admins
+// 5. روابط المستخدم (Auth)
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// 6. روابط الأدمين (CRUD)
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::resource('book', BookController::class)
-        ->except(['index', 'show']);
+    // استعملنا 'book' بالمفرد باش يبقاو الروابط منسجمين
+    Route::resource('book', BookController::class)->except(['index', 'show']);
 });
 
 require __DIR__.'/auth.php';
